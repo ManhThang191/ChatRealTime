@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChatRealTime</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <!-- Login Screen -->
+  <div id="login-screen" class="login-screen">
+    <div class="login-card">
+      <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+        </svg>
+      </div>
+      <h1>ChatRealTime</h1>
+      <p class="subtitle">Join the conversation</p>
+      <form id="login-form">
+        <input
+          type="text"
+          id="username-input"
+          placeholder="Enter your username"
+          maxlength="20"
+          autocomplete="off"
+          required
+        />
+        <button type="submit">Join Chat</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Chat Screen -->
+  <div id="chat-screen" class="chat-screen hidden">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>ChatRealTime</h2>
+      </div>
+      <div class="online-section">
+        <h3>Online (<span id="online-count">0</span>)</h3>
+        <ul id="user-list"></ul>
+      </div>
+    </aside>
+
+    <main class="chat-main">
+      <header class="chat-header">
+        <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Toggle sidebar">
+          <span></span><span></span><span></span>
+        </button>
+        <h2>General</h2>
+        <span id="header-online" class="header-online"></span>
+      </header>
+
+      <div id="messages" class="messages"></div>
+
+      <div id="typing-indicator" class="typing-indicator hidden"></div>
+
+      <form id="message-form" class="message-form">
+        <input
+          type="text"
+          id="message-input"
+          placeholder="Type a message..."
+          maxlength="500"
+          autocomplete="off"
+        />
+        <button type="submit" id="send-btn" aria-label="Send">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+          </svg>
+        </button>
+      </form>
+    </main>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
