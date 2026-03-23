@@ -30,17 +30,17 @@ npm install
 ### Running the App
 
 ```bash
-npm start
+npm run dev
 ```
 
-Then open your browser and navigate to [http://localhost:3000](http://localhost:3000).
+Then open your browser and navigate to [http://localhost:5001](http://localhost:5001).
 
 To test real-time features, open the URL in multiple browser tabs or windows.
 
 ## Tech Stack
 
-| Layer    | Technology |
-|----------|-----------|
-| Backend  | Node.js + Express |
-| Real-time | Socket.IO |
-| Frontend | HTML, CSS, Vanilla JS |
+| Layer     | Technology        |
+| --------- | ----------------- |
+| Backend   | Node.js + Express |
+| Real-time | Socket.IO         |
+| Frontend  | ReactJs, NextJs   |
