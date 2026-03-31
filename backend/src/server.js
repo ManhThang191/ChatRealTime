@@ -16,7 +16,6 @@ app.use(express.json())
 // public routes
 
 app.use('/api/auth', authRoutes)
-
 // private routes
 
 app.use(cors())
