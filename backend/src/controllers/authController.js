@@ -107,3 +107,21 @@ export const signIn = async (req, res) => {
       .json({ message: `Internal server error ${error.message}` })
   }
 }
+
+export const signOut = async (req, res) => {
+  try {
+    const token = req.cookies?.refreshToken
+    // Clear the refresh token cookie
+    if (token) {
+      await Session.findOneAndDelete({ refreshToken: token })
+
+      res.clearCookie('refreshToken')
+    }
+
+    // Send a success response
+    return res.status(200).json({ message: 'Logout successful' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
