@@ -14,6 +14,12 @@ const app = express()
 const PORT = process.env.PORT || 5001
 
 // middleware
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true
+  })
+)
 app.use(express.json())
 app.use(cookieParser())
 
@@ -23,8 +29,6 @@ app.use('/api/auth', authRoutes)
 // private routes
 app.use(protectRoute)
 app.use('/api/user', userRoute)
-
-app.use(cors())
 
 connectDB().then(() => {
   app.listen(PORT, () => {

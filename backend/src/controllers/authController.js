@@ -32,12 +32,13 @@ export const signUp = async (req, res) => {
 
     // Create a new user
     const newUser = new User({
-      username,
-      hashedPassword,
       email,
+      hashedPassword,
+      username,
       displayName: `${firstName} ${lastName}`
     })
-
+    console.log('BODY:', req.body)
+    console.log('username:', req.body.username)
     await newUser.save()
 
     return res.status(201).json({ message: 'User registered successfully' })

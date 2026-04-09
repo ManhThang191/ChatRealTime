@@ -1,12 +1,11 @@
-import Image from 'next/image'
-import styles from './page.module.css'
 import { Button } from '@mui/material'
+import SignIn from './(auth)/signIn/SignIn'
+import SignUp from './(auth)/signUp/SignUp'
 
 export default function Home() {
   return (
     <>
-      <Button>a</Button>
-      <div>hello</div>
+      <SignIn />
     </>
   )
 }
