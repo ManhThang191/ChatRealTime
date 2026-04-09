@@ -13,6 +13,9 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signInSchema } from './validateForm'
 import z from 'zod'
+import { useAuthStore } from '@/stores/useAuthStore'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 const SignIn = () => {
   const {
@@ -27,10 +30,15 @@ const SignIn = () => {
       password: ''
     }
   })
-
-  const onSubmit = (data: z.infer<typeof signInSchema>) => {
-    console.log('Data hợp lệ:', data)
+  const { signIn } = useAuthStore()
+  const route = useRouter()
+  const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+    // console.log('Data hợp lệ:', data)
+    await signIn(data.userName, data.password).then(() => {
+      route.push('/main')
+    })
   }
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>

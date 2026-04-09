@@ -13,17 +13,43 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   signUp: async (email, password, username, firstName, lastName) => {
     try {
       set({ loading: true })
-      toast.loading('Đang đăng ký...')
 
       // Simulate API call
-
-      await authService.signUp(email, password, username, firstName, lastName)
-
+      const res = await authService.signUp(
+        email,
+        password,
+        username,
+        firstName,
+        lastName
+      )
+      const message = res?.message || 'Đăng ký thành công!'
       // Simulate successful registration
-      toast.success('Đăng ký thành công!')
+      toast.success(message)
     } catch (error) {
-      console.log(error)
-      toast.error('Đã xảy ra lỗi khi đăng ký')
+      const message =
+        (error as any)?.response?.data?.message || 'Đã xảy ra lỗi khi đăng ký'
+
+      toast.error(message)
+      throw error
+    } finally {
+      set({ loading: false })
+    }
+  },
+  signIn: async (username, password) => {
+    try {
+      set({ loading: true })
+      const res = await authService.signIn(username, password)
+
+      const { accessToken, user } = res
+
+      const message = res?.message || 'Đăng nhap thành công!'
+      toast.success(message)
+      set({ accessToken, user })
+    } catch (error) {
+      const message =
+        (error as any)?.response?.data?.message || 'Đăng nhập thất bại'
+      toast.error(message)
+      throw error
     } finally {
       set({ loading: false })
     }

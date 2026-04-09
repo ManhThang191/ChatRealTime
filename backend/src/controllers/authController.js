@@ -37,8 +37,8 @@ export const signUp = async (req, res) => {
       username,
       displayName: `${firstName} ${lastName}`
     })
-    console.log('BODY:', req.body)
-    console.log('username:', req.body.username)
+    // console.log('BODY:', req.body)
+    // console.log('username:', req.body.username)
     await newUser.save()
 
     return res.status(201).json({ message: 'User registered successfully' })

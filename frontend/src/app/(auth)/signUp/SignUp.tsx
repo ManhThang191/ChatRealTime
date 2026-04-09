@@ -36,11 +36,14 @@ const SignUp = () => {
   const { signUp } = useAuthStore()
   const route = useRouter()
 
-  const onSubmit = (data: z.infer<typeof validateSignUp>) => {
-    console.log('Data hợp lệ:', data)
+  const onSubmit = async (data: z.infer<typeof validateSignUp>) => {
+    // console.log('Data hợp lệ:', data)
     const { email, password, username, firstName, lastName } = data
+
     // Gọi hàm đăng ký từ store
-    signUp(email, password, username, firstName, lastName)
+    await signUp(email, password, username, firstName, lastName).then(() => {
+      route.push('/signIn')
+    })
   }
 
   return (
