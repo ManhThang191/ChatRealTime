@@ -32,5 +32,9 @@ export const authService = {
       { withCredentials: true }
     )
     return res.data
+  },
+  signOut: async () => {
+    const res = await api.post('/auth/signout', {}, { withCredentials: true })
+    return res.data
   }
 }
