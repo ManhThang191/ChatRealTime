@@ -91,5 +91,24 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     } finally {
       set({ loading: false })
     }
+  },
+  refreshToken: async () => {
+    try {
+      const { user, fetchMe } = get()
+      const accessToken = await authService.refreshToken()
+      set({ accessToken })
+
+      if (user) {
+        await fetchMe()
+      }
+
+      return accessToken
+    } catch (error) {
+      const message =
+        (error as any)?.response?.data?.message || 'Không thể làm mới token'
+      toast.error(message)
+      get().clearState()
+      throw error
+    }
   }
 }))

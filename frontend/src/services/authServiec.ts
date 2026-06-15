@@ -47,5 +47,15 @@ export const authService = {
         'Không thể lấy thông tin người dùng'
       throw new Error(message)
     }
+  },
+  refreshToken: async () => {
+    try {
+      const res = await api.post('/auth/refresh', {}, { withCredentials: true })
+      return res.data.accessToken
+    } catch (error) {
+      const message =
+        (error as any)?.response?.data?.message || 'Không thể làm mới token'
+      throw new Error(message)
+    }
   }
 }
