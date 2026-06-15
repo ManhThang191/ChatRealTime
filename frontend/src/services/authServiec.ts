@@ -36,5 +36,16 @@ export const authService = {
   signOut: async () => {
     const res = await api.post('/auth/signout', {}, { withCredentials: true })
     return res.data
+  },
+  fetchMe: async () => {
+    try {
+      const res = await api.get('/user/me', { withCredentials: true })
+      return res.data.user
+    } catch (error) {
+      const message =
+        (error as any)?.response?.data?.message ||
+        'Không thể lấy thông tin người dùng'
+      throw new Error(message)
+    }
   }
 }

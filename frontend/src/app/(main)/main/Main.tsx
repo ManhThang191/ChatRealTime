@@ -13,9 +13,11 @@ const Main = () => {
       route.push('/signIn')
     })
   }
+  const { user } = useAuthStore()
   return (
     <>
       <Button onClick={() => signOutHanl()}>Sign Out</Button>
+      {user && <p>Welcome, {user.displayName}!</p>}
     </>
   )
 }

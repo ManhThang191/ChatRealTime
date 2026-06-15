@@ -53,6 +53,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       const message = res?.message || 'Đăng nhap thành công!'
       toast.success(message)
       set({ accessToken, user })
+
+      await get().fetchMe()
     } catch (error) {
       const message =
         (error as any)?.response?.data?.message || 'Đăng nhập thất bại'
@@ -73,6 +75,21 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         (error as any)?.response?.data?.message || 'Đã xảy ra lỗi khi đăng xuất'
       toast.error(message)
       throw error
+    }
+  },
+  fetchMe: async () => {
+    try {
+      const res = await authService.fetchMe()
+      set({ user: res })
+    } catch (error) {
+      set({ user: null, accessToken: null })
+      const message =
+        (error as any)?.response?.data?.message ||
+        'Không thể lấy thông tin người dùng'
+      toast.error(message)
+      throw error
+    } finally {
+      set({ loading: false })
     }
   }
 }))

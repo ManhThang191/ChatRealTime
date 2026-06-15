@@ -126,3 +126,32 @@ export const signOut = async (req, res) => {
     return res.status(500).json({ message: 'Internal server error' })
   }
 }
+
+// tao access token moi bang refresh token
+export const refreshToken = async (req, res) => {
+  try {
+    // lay refresh token tu cookie
+    const token = req.cookies?.refreshToken
+    if (!token) {
+      return res.status(401).json({ message: 'Refresh token not provided' })
+    }
+
+    //so sanh refresh token voi database
+    const session = await Session.findOne({ refreshToken: token })
+    if (!session) {
+      return res
+        .status(401)
+        .json({ message: 'Invalid refresh token or expired' })
+    }
+
+    // kiem tra refresh token co het han hay chua
+    if (session.expiresAt < new Date()) {
+    }
+    //tao access token moi neu refresh token hop le
+
+    //return
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
