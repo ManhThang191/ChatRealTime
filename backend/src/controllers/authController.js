@@ -146,10 +146,24 @@ export const refreshToken = async (req, res) => {
 
     // kiem tra refresh token co het han hay chua
     if (session.expiresAt < new Date()) {
+      await Session.findOneAndDelete({ refreshToken: token })
+      return res
+        .status(401)
+        .json({ message: 'Refresh token expired, please log in again' })
     }
     //tao access token moi neu refresh token hop le
+    const user = await User.findById(session.userId)
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
+    }
 
-    //return
+    const accessToken = jwt.sign(
+      { userId: user._id, username: user.username },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: TOKEN_EXPIRATION }
+    )
+
+    return res.status(200).json({ accessToken })
   } catch (error) {
     console.error(error)
     return res.status(500).json({ message: 'Internal server error' })
