@@ -35,6 +35,7 @@ export const protectRoute = async (req, res, next) => {
 
         // gan user vao req de cac controller sau co the su dung
         req.user = user
+
         next()
       }
     )
