@@ -9,6 +9,8 @@ import { protectRoute } from './middlewares/authMiddlewares.js'
 import friendRoute from './routes/friendRoute.js'
 import messageRoute from './routes/messageRoute.js'
 import conversationRoute from './routes/conversation.js'
+import swaggerUi from 'swagger-ui-express'
+import fs from 'fs'
 
 dotenv.config()
 
