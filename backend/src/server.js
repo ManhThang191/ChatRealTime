@@ -7,6 +7,7 @@ import userRoute from './routes/userRoute.js'
 import cookieParser from 'cookie-parser'
 import { protectRoute } from './middlewares/authMiddlewares.js'
 import friendRoute from './routes/friendRoute.js'
+import messageRoute from './routes/messageRoute.js'
 
 dotenv.config()
 
@@ -31,6 +32,7 @@ app.use('/api/auth', authRoutes)
 app.use(protectRoute)
 app.use('/api/user', userRoute)
 app.use('/api/friend', friendRoute)
+app.use('/api/message', messageRoute)
 
 connectDB().then(() => {
   app.listen(PORT, () => {
