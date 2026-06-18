@@ -138,6 +138,40 @@ export const declineFriendRequest = async (req, res) => {
 
 export const getAllFriends = async (req, res) => {
   try {
+    const userId = req.user._id
+
+    const friendsShip = await Friend.find({
+      $or: [{ userA: userId }, { userB: userId }]
+    })
+      .populate('userA', '_id username displayName email avatarUrl')
+      .populate('userB', '_id username displayName email avatarUrl')
+      .lean()
+
+    if (!friendsShip || friendsShip.length === 0) {
+      return res.status(200).json({ friends: [] })
+    }
+
+    if (friendsShip.length > 0) {
+      const friends = friendsShip.map((friend) => {
+        if (friend.userA._id.toString() === userId.toString()) {
+          return {
+            _id: friend.userB._id,
+            displayName: friend.userB.displayName,
+            email: friend.userB.email,
+            avatarUrl: friend.userB.avatarUrl
+          }
+        } else {
+          return {
+            _id: friend.userA._id,
+            displayName: friend.userA.displayName,
+            email: friend.userA.email,
+            avatarUrl: friend.userA.avatarUrl
+          }
+        }
+      })
+
+      return res.status(200).json({ friends })
+    }
   } catch (error) {
     res.status(500).json({ message: error.message })
     console.log('Loi khi lay danh sach ban be: ', error)
