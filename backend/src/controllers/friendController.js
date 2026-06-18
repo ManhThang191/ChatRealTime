@@ -180,6 +180,18 @@ export const getAllFriends = async (req, res) => {
 
 export const getFriendRequests = async (req, res) => {
   try {
+    const userId = req.user._id
+
+    const populateFields = '_id username displayName email avatarUrl'
+
+    const [sent, received] = await Promise.all([
+      FriendRequest.find({ from: userId })
+        .populate('to', populateFields)
+        .lean(),
+      FriendRequest.find({ to: userId }).populate('from', populateFields).lean()
+    ])
+
+    return res.status(200).json({ sent, received })
   } catch (error) {
     res.status(500).json({ message: error.message })
     console.log('Loi khi lay yeu cau ket ban: ', error)
