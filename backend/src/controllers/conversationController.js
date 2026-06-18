@@ -129,5 +129,31 @@ export const getConversations = async (req, res) => {
 
 export const getMessages = async (req, res) => {
   try {
-  } catch (error) {}
+    const { conversationId } = req.params
+    const userId = req.user._id
+    const { limit = 20, cursor } = req.query
+
+    const query = { conversationId }
+
+    if (cursor) {
+      query.createdAt = { $lt: new Date(cursor) }
+    }
+
+    let messages = await Message.find(query)
+      .sort({ createdAt: -1 })
+      .limit(Number(limit) + 1)
+
+    let nextCursor = null
+    if (messages.length > limit) {
+      const lastMessage = messages[messages.length - 1]
+      nextCursor = lastMessage.createdAt.toISOString()
+      messages.pop()
+    }
+
+    messages = messages.reverse()
+
+    return res.status(200).json({ messages, nextCursor })
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message })
+  }
 }
