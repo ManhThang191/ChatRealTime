@@ -59,5 +59,27 @@ export const sendDirectMessage = async (req, res) => {
 
 export const sendGroupMessage = async (req, res) => {
   try {
-  } catch (error) {}
+    const { content, conversationId } = req.body
+    const senderId = req.user._id
+    const conversation = req.conversation
+
+    if (!content) {
+      return res.status(400).json({ message: 'Content is required' })
+    }
+    const message = await Message.create({
+      content,
+      senderId,
+      conversationId: conversation._id,
+      createdAt: new Date()
+    })
+
+    updateConversationAfterCreateMessage(conversation, message, senderId)
+    await conversation.save()
+
+    return res
+      .status(201)
+      .json({ message: 'Message sent successfully', conversation })
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message })
+  }
 }
