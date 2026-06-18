@@ -84,6 +84,50 @@ export const createConversation = async (req, res) => {
   }
 }
 
-export const getConversations = async (req, res) => {}
+export const getConversations = async (req, res) => {
+  try {
+    const userId = req.user._id
+    const conversations = await Conversation.find({
+      'participants.userId': userId
+    })
+      .sort({ lastMessageAt: -1, updatedAt: -1 })
+      .populate([
+        {
+          path: 'participants.userId',
+          select: 'username displayName avatarUrl'
+        },
+        { path: 'seenBy', select: 'username displayName avatarUrl' },
+        {
+          path: 'lastMessage.senderId',
+          select: 'username displayName avatarUrl'
+        }
+      ])
 
-export const getMessages = async (req, res) => {}
+    const formattedConversations = conversations.map((conversation) => {
+      const participants = (conversation.participants || []).map(
+        (participant) => ({
+          _id: participant.userId?._id,
+          username: participant.userId?.username,
+          displayName: participant.userId?.displayName,
+          avatarUrl: participant.userId?.avatarUrl,
+          joinedAt: participant.joinedAt
+        })
+      )
+
+      return {
+        ...conversation.toObject(),
+        unreadCount: conversation.unreadCount || {},
+        participants
+      }
+    })
+
+    return res.status(200).json({ conversations: formattedConversations })
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message })
+  }
+}
+
+export const getMessages = async (req, res) => {
+  try {
+  } catch (error) {}
+}
